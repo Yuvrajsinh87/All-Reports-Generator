@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITI રિપોર્ટ જનરેટર હબ</title>
+  <title>ITI રિપોર્ટ જનરેટર સોફ્ટવેર હબ</title>
   <!-- FontAwesome 6.5.1 CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
@@ -16,8 +16,6 @@
       --accent-emerald: #10b981;
       --accent-amber: #f59e0b;
       --accent-cyan: #06b6d4;
-      --card-bg: #ffffff;
-      --text-main: #0f172a;
     }
 
     * {
@@ -30,38 +28,53 @@
     body {
       display: flex;
       height: 100vh;
-      background-color: #f8fafc;
+      background-color: #f1f5f9;
       overflow: hidden;
     }
 
     /* Sidebar Styling */
     .sidebar {
-      width: 320px;
+      width: 300px;
       background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
       color: #ffffff;
       display: flex;
       flex-direction: column;
       box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
-      z-index: 10;
+      z-index: 100;
       flex-shrink: 0;
+      transition: all 0.3s ease;
     }
 
     .brand {
-      padding: 22px 18px;
-      font-size: 1.15rem;
+      padding: 20px 18px;
+      font-size: 1.1rem;
       font-weight: 800;
       background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
       color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
       box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
     }
 
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .brand i {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       color: #38bdf8;
-      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+    }
+
+    .close-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
     }
 
     .nav-list {
@@ -72,46 +85,42 @@
     }
 
     .nav-item {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .nav-link {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 16px;
+      padding: 12px 14px;
       color: #cbd5e1;
       text-decoration: none;
       border-radius: 10px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 500;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
       cursor: pointer;
-      border: 1px solid transparent;
     }
 
     .nav-link:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
-      transform: translateX(4px);
-      border-color: rgba(255, 255, 255, 0.1);
     }
 
     .nav-link.active {
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       color: #ffffff;
       font-weight: 700;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
-      border-color: #60a5fa;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
     }
 
     .nav-link i {
-      font-size: 1.2rem;
-      width: 26px;
+      font-size: 1.1rem;
+      width: 24px;
       text-align: center;
     }
 
-    /* Distinct Tab Icons Color Styling */
+    /* Distinct Icons Color */
     .nav-link[data-color="home"] i { color: #38bdf8; }
     .nav-link[data-color="blue"] i { color: #60a5fa; }
     .nav-link[data-color="purple"] i { color: #c084fc; }
@@ -124,119 +133,116 @@
       color: #ffffff !important;
     }
 
-    /* Highly Visible Creator Box */
+    /* Highlighted Creator Box */
     .creator-box {
-      margin: 12px;
-      padding: 16px;
+      margin: 10px;
+      padding: 14px;
       background: linear-gradient(135deg, rgba(30, 27, 75, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
       border: 1.5px solid #818cf8;
       border-radius: 12px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(129, 140, 248, 0.25);
       position: relative;
-      overflow: hidden;
-    }
-
-    .creator-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #38bdf8, #818cf8, #ec4899);
     }
 
     .creator-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 3px 10px;
+      gap: 5px;
+      padding: 2px 8px;
       background: linear-gradient(135deg, #4f46e5, #7c3aed);
       color: #ffffff;
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 800;
       border-radius: 20px;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 8px;
-      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
+      margin-bottom: 6px;
     }
 
     .creator-name {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: #ffffff;
-      letter-spacing: 0.5px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .creator-dept {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: #38bdf8;
       font-weight: 600;
-      margin-top: 3px;
+      margin-top: 2px;
     }
 
-    /* Main Workspace */
+    /* Main Area */
     .main-area {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       background-color: #f1f5f9;
       overflow: hidden;
+      width: 100%;
     }
 
     .top-bar {
-      height: 60px;
+      height: 58px;
       background-color: #ffffff;
       border-bottom: 1px solid #e2e8f0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     }
 
-    .top-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #0f172a;
+    .left-title-group {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
+    .menu-toggle {
+      display: none;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      color: #0f172a;
+      cursor: pointer;
+    }
+
+    .top-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .top-actions {
       display: flex;
-      gap: 12px;
+      gap: 8px;
     }
 
     .btn {
-      padding: 8px 16px;
+      padding: 7px 12px;
       background-color: #ffffff;
       color: #334155;
       border: 1px solid #cbd5e1;
       border-radius: 8px;
       text-decoration: none;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       font-weight: 600;
-      transition: all 0.2s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    .btn:hover {
-      background-color: #f8fafc;
-      border-color: #94a3b8;
-      color: #0284c7;
-      transform: translateY(-1px);
     }
 
     .view-panel {
       flex-grow: 1;
       position: relative;
+      height: calc(100vh - 58px);
     }
 
     .iframe-view {
@@ -250,78 +256,46 @@
       display: block;
     }
 
-    /* Welcome Container Styles */
+    /* Welcome Container */
     .welcome-container {
-      padding: 35px;
+      padding: 20px;
       overflow-y: auto;
       height: 100%;
     }
 
     .welcome-header {
-      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
       color: white;
-      padding: 35px;
-      border-radius: 16px;
-      margin-bottom: 30px;
-      box-shadow: 0 10px 25px rgba(49, 46, 129, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .welcome-header::after {
-      content: '';
-      position: absolute;
-      right: -50px;
-      bottom: -50px;
-      width: 220px;
-      height: 220px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
-      pointer-events: none;
+      padding: 24px;
+      border-radius: 14px;
+      margin-bottom: 20px;
     }
 
     .welcome-header h1 {
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      margin-bottom: 10px;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      margin-bottom: 8px;
     }
 
     .welcome-header p {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #c7d2fe;
-      max-width: 700px;
-      line-height: 1.5;
     }
 
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Vibrant Grid Cards */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
     }
 
     .card {
       background: #ffffff;
-      padding: 24px;
-      border-radius: 14px;
+      padding: 18px;
+      border-radius: 12px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.2s;
       position: relative;
       overflow: hidden;
     }
@@ -333,46 +307,92 @@
       background: var(--card-accent, #3b82f6);
     }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-      border-color: var(--card-accent, #3b82f6);
+    .card:active {
+      transform: scale(0.98);
     }
 
     .card-icon {
-      width: 55px;
-      height: 55px;
-      border-radius: 12px;
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 18px;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
       background: var(--icon-bg, #eff6ff);
       color: var(--card-accent, #3b82f6);
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .card-desc {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       color: #64748b;
-      line-height: 1.5;
+    }
+
+    /* Mobile Responsive CSS */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: -320px;
+        height: 100vh;
+        width: 280px;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .close-btn {
+        display: block;
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 90;
+      }
+
+      .overlay.active {
+        display: block;
+      }
+
+      .btn-text {
+        display: none;
+      }
+
+      .top-title span {
+        font-size: 0.92rem;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Mobile Overlay -->
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
   <!-- Sidebar -->
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="brand">
-      <i class="fa-solid fa-layer-group"></i>
-      <span>ITI Report Hub</span>
+      <div class="brand-title">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>ITI Report Hub</span>
+      </div>
+      <button class="close-btn" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
     <ul class="nav-list">
@@ -401,7 +421,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-color="cyan" onclick="showTab('app4', 'OC ઓછા ટકા હાજરી રીપોર્ટ', 'fa-solid fa-file-signature', this)">
+        <a class="nav-link" data-color="cyan" onclick="showTab('app4', 'ઓછા ટકા હાજરી OC જનરેટર', 'fa-solid fa-file-signature', this)">
           <i class="fa-solid fa-file-signature"></i>
           <span>ઓછા ટકા હાજરી OC જનરેટર</span>
         </a>
@@ -420,7 +440,7 @@
       </li>
     </ul>
 
-    <!-- Highlighted Creator Box -->
+    <!-- Creator Box -->
     <div class="creator-box">
       <div class="creator-badge"><i class="fa-solid fa-code"></i> CREATED BY</div>
       <div class="creator-name">YUVRAJSINH KOSAMIA</div>
@@ -431,16 +451,19 @@
   <!-- Main Area -->
   <div class="main-area">
     <div class="top-bar">
-      <div class="top-title" id="page-title">
-        <i class="fa-solid fa-house-laptop" style="color: #3b82f6;"></i>
-        <span>મુખ્ય પૃષ્ઠ</span>
+      <div class="left-title-group">
+        <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <div class="top-title" id="page-title">
+          <i class="fa-solid fa-house-laptop" style="color: #3b82f6;"></i>
+          <span>મુખ્ય પૃષ્ઠ</span>
+        </div>
       </div>
       <div class="top-actions">
         <button class="btn" onclick="refreshCurrent()">
-          <i class="fa-solid fa-rotate-right"></i> રિફ્રેશ
+          <i class="fa-solid fa-rotate-right"></i> <span class="btn-text">રિફ્રેશ</span>
         </button>
         <a id="ext-link" href="#" target="_blank" class="btn" style="display: none;">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> નવી ટેબમાં ખોલો
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> <span class="btn-text">નવી ટેબ</span>
         </a>
       </div>
     </div>
@@ -449,50 +472,45 @@
       <!-- Welcome Page -->
       <div id="view-home" class="welcome-container iframe-view active-view">
         <div class="welcome-header">
-          <h1><i class="fa-solid fa-award" style="color: #fbbf24;"></i> સ્વાગત છે - ITI રીપોર્ટ જનરેટર હબ</h1>
-          <p>આ એકીકૃત સોફ્ટવેર હબ દ્વારા ITI ના તમામ ગેરહાજરી, OC અને એબ્સકોન્ડર રીપોર્ટ ખૂબ જ સરળતાથી અને ઝડપથી તૈયાર કરી શકાશે.</p>
-        </div>
-
-        <div class="section-title">
-          <i class="fa-solid fa-border-all" style="color: #4f46e5;"></i>
-          <span>તમામ ટૂલ્સ જનરેટર (Quick Tools)</span>
+          <h1><i class="fa-solid fa-award" style="color: #fbbf24;"></i> સ્વાગત છે</h1>
+          <p>ITI રીપોર્ટ જનરેટર હબ - મોબાઈલ અને કમ્પ્યુટર બંને માટે અનુકૂળ.</p>
         </div>
 
         <div class="cards-grid">
           <div class="card" style="--card-accent: #3b82f6; --icon-bg: #eff6ff;" onclick="triggerNav(1)">
             <div class="card-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
             <div class="card-title">સતત ગેરહાજર રીપોર્ટ</div>
-            <div class="card-desc">ટ્રેનીઓના સતત ગેરહાજરી સંબંધિત સ્ટેટિસ્ટિક્સ અને પત્રવ્યવહાર રીપોર્ટ.</div>
+            <div class="card-desc">ટ્રેનીઓ માટે સતત ગેરહાજર રીપોર્ટ.</div>
           </div>
 
           <div class="card" style="--card-accent: #8b5cf6; --icon-bg: #f5f3ff;" onclick="triggerNav(2)">
             <div class="card-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
             <div class="card-title">OC સતત ગેરહાજર રીપોર્ટ</div>
-            <div class="card-desc">સતત ગેરહાજર રહેતા ટ્રેનીઓ માટેનું ઓફિશિયલ કવરીંગ (OC) લેટર જનરેટર.</div>
+            <div class="card-desc">સતત ગેરહાજર રહેતા ટ્રેનીઓ માટે OC.</div>
           </div>
 
           <div class="card" style="--card-accent: #10b981; --icon-bg: #ecfdf5;" onclick="triggerNav(3)">
             <div class="card-icon"><i class="fa-solid fa-chart-line-down"></i></div>
             <div class="card-title">ઓછા ટકા હાજરી રીપોર્ટ</div>
-            <div class="card-desc">ઓછી હાજરી ટકાવારી ધરાવતા શિષ્યવૃત્તિ કે શિસ્તભંગ પાત્ર ટ્રેની યાદી.</div>
+            <div class="card-desc">ઓછી હાજરી ટકાવારી ધરાવતા ટ્રેનીઓની યાદી.</div>
           </div>
 
           <div class="card" style="--card-accent: #06b6d4; --icon-bg: #ecfeff;" onclick="triggerNav(4)">
             <div class="card-icon"><i class="fa-solid fa-file-signature"></i></div>
             <div class="card-title">ઓછા ટકા હાજરી OC જનરેટર</div>
-            <div class="card-desc">ઓછી હાજરી ધરાવતા ટ્રેનીઓ માટે શિસ્તભંગ અને કવરીંગ પત્ર તૈયાર કરવા.</div>
+            <div class="card-desc">ઓછી હાજરી માટે OC જનરેટ કરવા.</div>
           </div>
 
           <div class="card" style="--card-accent: #f59e0b; --icon-bg: #fffbeb;" onclick="triggerNav(5)">
             <div class="card-icon"><i class="fa-solid fa-user-slash"></i></div>
             <div class="card-title">એબ્સકોન્ડર રીપોર્ટ</div>
-            <div class="card-desc">લાંબા સમયથી બિનઅધિકૃત ગેરહાજર (Absconder) ટ્રેનીઓની વિગતવાર યાદી.</div>
+            <div class="card-desc">એબ્સકોન્ડર ટ્રેનીઓની વિગતવાર યાદી.</div>
           </div>
 
           <div class="card" style="--card-accent: #ec4899; --icon-bg: #fdf2f8;" onclick="triggerNav(6)">
             <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
             <div class="card-title">OC એબ્સકોન્ડર રીપોર્ટ</div>
-            <div class="card-desc">એબ્સકોન્ડર ટ્રેનીઓને કમી કરવા અથવા આખરી નોટિસ મોકલવા અંગેનું OC.</div>
+            <div class="card-desc">એબ્સકોન્ડર ટ્રેનીઓ માટેની આખરી નોટિસ / OC.</div>
           </div>
         </div>
       </div>
@@ -519,44 +537,42 @@
 
     let activeViewId = 'home';
 
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('active');
+    }
+
     function showTab(viewId, title, iconClass, elem) {
       activeViewId = viewId;
       
-      // Hide all views
       document.querySelectorAll('.iframe-view').forEach(v => v.classList.remove('active-view'));
-      
-      // Show active view
       document.getElementById('view-' + viewId).classList.add('active-view');
 
-      // Header Icon Color
       let iconColor = '#3b82f6';
       if(elem && elem.getAttribute('data-color')) {
         const colorMap = {
-          'home': '#3b82f6',
-          'blue': '#3b82f6',
-          'purple': '#8b5cf6',
-          'emerald': '#10b981',
-          'cyan': '#06b6d4',
-          'amber': '#f59e0b',
-          'rose': '#ec4899'
+          'home': '#3b82f6', 'blue': '#3b82f6', 'purple': '#8b5cf6',
+          'emerald': '#10b981', 'cyan': '#06b6d4', 'amber': '#f59e0b', 'rose': '#ec4899'
         };
         iconColor = colorMap[elem.getAttribute('data-color')] || '#3b82f6';
       }
 
-      // Update Title
       document.getElementById('page-title').innerHTML = `<i class="${iconClass}" style="color: ${iconColor};"></i> <span>${title}</span>`;
 
-      // Highlight active sidebar item
       document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
       if(elem) elem.classList.add('active');
 
-      // External link button
       const extBtn = document.getElementById('ext-link');
       if(viewId !== 'home') {
         extBtn.style.display = 'flex';
         extBtn.href = links[viewId];
       } else {
         extBtn.style.display = 'none';
+      }
+
+      // Close sidebar in mobile view after selecting
+      if(window.innerWidth <= 768) {
+        toggleSidebar();
       }
     }
 
