@@ -133,7 +133,7 @@
       color: #ffffff !important;
     }
 
-    /* Highlighted Creator Box */
+    /* Sidebar Creator Box */
     .creator-box {
       margin: 10px;
       padding: 14px;
@@ -256,46 +256,97 @@
       display: block;
     }
 
-    /* Welcome Container */
+    /* Welcome Container & Featured Welcome Credit Banner */
     .welcome-container {
-      padding: 20px;
+      padding: 24px;
       overflow-y: auto;
       height: 100%;
     }
 
     .welcome-header {
-      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
       color: white;
-      padding: 24px;
-      border-radius: 14px;
-      margin-bottom: 20px;
+      padding: 28px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(30, 27, 75, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .welcome-header h1 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .welcome-header p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #c7d2fe;
+      margin-bottom: 20px;
+    }
+
+    /* Main Welcome Credit Box */
+    .hero-credit-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-credit-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #0f172a;
+    }
+
+    .hero-credit-info {
+      text-align: left;
+    }
+
+    .hero-credit-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: #38bdf8;
+      text-transform: uppercase;
+    }
+
+    .hero-credit-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .hero-credit-dept {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      font-weight: 500;
     }
 
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
+      gap: 18px;
     }
 
     .card {
       background: #ffffff;
-      padding: 18px;
-      border-radius: 12px;
+      padding: 20px;
+      border-radius: 14px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
     }
@@ -307,33 +358,36 @@
       background: var(--card-accent, #3b82f6);
     }
 
-    .card:active {
-      transform: scale(0.98);
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+      border-color: var(--card-accent, #3b82f6);
     }
 
     .card-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 10px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.3rem;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       background: var(--icon-bg, #eff6ff);
       color: var(--card-accent, #3b82f6);
     }
 
     .card-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #0f172a;
       margin-bottom: 6px;
     }
 
     .card-desc {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       color: #64748b;
+      line-height: 1.4;
     }
 
     /* Mobile Responsive CSS */
@@ -374,8 +428,8 @@
         display: none;
       }
 
-      .top-title span {
-        font-size: 0.92rem;
+      .hero-credit-box {
+        width: 100%;
       }
     }
   </style>
@@ -440,7 +494,7 @@
       </li>
     </ul>
 
-    <!-- Creator Box -->
+    <!-- Sidebar Creator Box -->
     <div class="creator-box">
       <div class="creator-badge"><i class="fa-solid fa-code"></i> CREATED BY</div>
       <div class="creator-name">YUVRAJSINH KOSAMIA</div>
@@ -472,8 +526,25 @@
       <!-- Welcome Page -->
       <div id="view-home" class="welcome-container iframe-view active-view">
         <div class="welcome-header">
-          <h1><i class="fa-solid fa-award" style="color: #fbbf24;"></i> સ્વાગત છે</h1>
-          <p>ITI રીપોર્ટ જનરેટર હબ - મોબાઈલ અને કમ્પ્યુટર બંને માટે અનુકૂળ.</p>
+          <h1><i class="fa-solid fa-award" style="color: #fbbf24;"></i> સ્વાગત છે - ITI રીપોર્ટ જનરેટર હબ</h1>
+          <p>આ એકીકૃત સોફ્ટવેર હબ દ્વારા ITI ના તમામ ગેરહાજરી, OC અને એબ્સકોન્ડર રીપોર્ટ સરળતાથી બનાવી શકાશે.</p>
+          
+          <!-- Prominent Credit Box on Welcome Header -->
+          <div class="hero-credit-box">
+            <div class="hero-credit-icon">
+              <i class="fa-solid fa-user-gear"></i>
+            </div>
+            <div class="hero-credit-info">
+              <div class="hero-credit-tag">CREATED BY</div>
+              <div class="hero-credit-name">YUVRAJSINH KOSAMIA</div>
+              <div class="hero-credit-dept">MECHANIC DIESEL | ITI ANKLESHWAR</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-weight: 700; font-size: 1.1rem; color: #1e293b; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-border-all" style="color: #4f46e5;"></i>
+          <span>તમામ ટૂલ્સ (Quick Select)</span>
         </div>
 
         <div class="cards-grid">
@@ -570,7 +641,6 @@
         extBtn.style.display = 'none';
       }
 
-      // Close sidebar in mobile view after selecting
       if(window.innerWidth <= 768) {
         toggleSidebar();
       }
