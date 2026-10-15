@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITI રિપોર્ટ જનરેટર હબ</title>
+  <!-- FontAwesome 6.5.1 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --sidebar-bg: #1e1b4b;
+      --primary-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f8fafc;
+      overflow: hidden;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      width: 320px;
+      background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      padding: 22px 18px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    }
+
+    .brand i {
+      font-size: 1.6rem;
+      color: #38bdf8;
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 15px 12px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      margin-bottom: 8px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: #cbd5e1;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      transform: translateX(4px);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-link.active {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+      border-color: #60a5fa;
+    }
+
+    .nav-link i {
+      font-size: 1.2rem;
+      width: 26px;
+      text-align: center;
+    }
+
+    /* Distinct Tab Icons Color Styling */
+    .nav-link[data-color="home"] i { color: #38bdf8; }
+    .nav-link[data-color="blue"] i { color: #60a5fa; }
+    .nav-link[data-color="purple"] i { color: #c084fc; }
+    .nav-link[data-color="emerald"] i { color: #34d399; }
+    .nav-link[data-color="cyan"] i { color: #22d3ee; }
+    .nav-link[data-color="amber"] i { color: #fbbf24; }
+    .nav-link[data-color="rose"] i { color: #fb7185; }
+
+    .nav-link.active i {
+      color: #ffffff !important;
+    }
+
+    /* Highly Visible Creator Box */
+    .creator-box {
+      margin: 12px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid #818cf8;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(129, 140, 248, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .creator-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #ec4899);
+    }
+
+    .creator-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      border-radius: 20px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
+    }
+
+    .creator-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .creator-dept {
+      font-size: 0.78rem;
+      color: #38bdf8;
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    /* Main Workspace */
+    .main-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: #f1f5f9;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      height: 60px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+
+    .top-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      background-color: #ffffff;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      transition: all 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .btn:hover {
+      background-color: #f8fafc;
+      border-color: #94a3b8;
+      color: #0284c7;
+      transform: translateY(-1px);
+    }
+
+    .view-panel {
+      flex-grow: 1;
+      position: relative;
+    }
+
+    .iframe-view {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
+    }
+
+    .iframe-view.active-view {
+      display: block;
+    }
+
+    /* Welcome Container Styles */
+    .welcome-container {
+      padding: 35px;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .welcome-header {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+      color: white;
+      padding: 35px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 25px rgba(49, 46, 129, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-header::after {
+      content: '';
+      position: absolute;
+      right: -50px;
+      bottom: -50px;
+      width: 220px;
+      height: 220px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .welcome-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .welcome-header p {
+      font-size: 1rem;
+      color: #c7d2fe;
+      max-width: 700px;
+      line-height: 1.5;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Vibrant Grid Cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--card-accent, #3b82f6);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+      border-color: var(--card-accent, #3b82f6);
+    }
+
+    .card-icon {
+      width: 55px;
+      height: 55px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      background: var(--icon-bg, #eff6ff);
+      color: var(--card-accent, #3b82f6);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="brand">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>ITI Report Hub</span>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a class="nav-link active" data-color="home" onclick="showTab('home', 'મુખ્ય પૃષ્ઠ', 'fa-solid fa-house-laptop', this)">
+          <i class="fa-solid fa-house-laptop"></i>
+          <span>મુખ્ય પૃષ્ઠ (Home)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-color="blue" onclick="showTab('app1', 'સતત ગેરહાજર રીપોર્ટ', 'fa-solid fa-calendar-xmark', this)">
+          <i class="fa-solid fa-calendar-xmark"></i>
+          <span>સતત ગેરહાજર રીપોર્ટ</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-color="purple" onclick="showTab('app2', 'OC સતત ગેરહાજર રીપોર્ટ', 'fa-solid fa-envelope-open-text', this)">
+          <i class="fa-solid fa-envelope-open-text"></i>
+          <span>OC સતત ગેરહાજર રીપોર્ટ</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-color="emerald" onclick="showTab('app3', 'ઓછા ટકા હાજરી રીપોર્ટ', 'fa-solid fa-chart-line-down', this)">
+          <i class="fa-solid fa-chart-line-down"></i>
+          <span>ઓછા ટકા હાજરી રીપોર્ટ</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-color="cyan" onclick="showTab('app4', 'OC ઓછા ટકા હાજરી રીપોર્ટ', 'fa-solid fa-file-signature', this)">
+          <i class="fa-solid fa-file-signature"></i>
+          <span>ઓછા ટકા હાજરી OC જનરેટર</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-color="amber" onclick="showTab('app5', 'એબ્સકોન્ડર રીપોર્ટ', 'fa-solid fa-user-slash', this)">
+          <i class="fa-solid fa-user-slash"></i>
+          <span>એબ્સકોન્ડર રીપોર્ટ</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-color="rose" onclick="showTab('app6', 'OC એબ્સકોન્ડર રીપોર્ટ', 'fa-solid fa-triangle-exclamation', this)">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>OC એબ્સકોન્ડર રીપોર્ટ</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Highlighted Creator Box -->
+    <div class="creator-box">
+      <div class="creator-badge"><i class="fa-solid fa-code"></i> CREATED BY</div>
+      <div class="creator-name">YUVRAJSINH KOSAMIA</div>
+      <div class="creator-dept">MECHANIC DIESEL | ITI ANKLESHWAR</div>
+    </div>
+  </div>
+
+  <!-- Main Area -->
+  <div class="main-area">
+    <div class="top-bar">
+      <div class="top-title" id="page-title">
+        <i class="fa-solid fa-house-laptop" style="color: #3b82f6;"></i>
+        <span>મુખ્ય પૃષ્ઠ</span>
+      </div>
+      <div class="top-actions">
+        <button class="btn" onclick="refreshCurrent()">
+          <i class="fa-solid fa-rotate-right"></i> રિફ્રેશ
+        </button>
+        <a id="ext-link" href="#" target="_blank" class="btn" style="display: none;">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> નવી ટેબમાં ખોલો
+        </a>
+      </div>
+    </div>
+
+    <div class="view-panel">
+      <!-- Welcome Page -->
+      <div id="view-home" class="welcome-container iframe-view active-view">
+        <div class="welcome-header">
+          <h1><i class="fa-solid fa-award" style="color: #fbbf24;"></i> સ્વાગત છે - ITI રીપોર્ટ જનરેટર હબ</h1>
+          <p>આ એકીકૃત સોફ્ટવેર હબ દ્વારા ITI ના તમામ ગેરહાજરી, OC અને એબ્સકોન્ડર રીપોર્ટ ખૂબ જ સરળતાથી અને ઝડપથી તૈયાર કરી શકાશે.</p>
+        </div>
+
+        <div class="section-title">
+          <i class="fa-solid fa-border-all" style="color: #4f46e5;"></i>
+          <span>તમામ ટૂલ્સ જનરેટર (Quick Tools)</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="card" style="--card-accent: #3b82f6; --icon-bg: #eff6ff;" onclick="triggerNav(1)">
+            <div class="card-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+            <div class="card-title">સતત ગેરહાજર રીપોર્ટ</div>
+            <div class="card-desc">ટ્રેનીઓના સતત ગેરહાજરી સંબંધિત સ્ટેટિસ્ટિક્સ અને પત્રવ્યવહાર રીપોર્ટ.</div>
+          </div>
+
+          <div class="card" style="--card-accent: #8b5cf6; --icon-bg: #f5f3ff;" onclick="triggerNav(2)">
+            <div class="card-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+            <div class="card-title">OC સતત ગેરહાજર રીપોર્ટ</div>
+            <div class="card-desc">સતત ગેરહાજર રહેતા ટ્રેનીઓ માટેનું ઓફિશિયલ કવરીંગ (OC) લેટર જનરેટર.</div>
+          </div>
+
+          <div class="card" style="--card-accent: #10b981; --icon-bg: #ecfdf5;" onclick="triggerNav(3)">
+            <div class="card-icon"><i class="fa-solid fa-chart-line-down"></i></div>
+            <div class="card-title">ઓછા ટકા હાજરી રીપોર્ટ</div>
+            <div class="card-desc">ઓછી હાજરી ટકાવારી ધરાવતા શિષ્યવૃત્તિ કે શિસ્તભંગ પાત્ર ટ્રેની યાદી.</div>
+          </div>
+
+          <div class="card" style="--card-accent: #06b6d4; --icon-bg: #ecfeff;" onclick="triggerNav(4)">
+            <div class="card-icon"><i class="fa-solid fa-file-signature"></i></div>
+            <div class="card-title">ઓછા ટકા હાજરી OC જનરેટર</div>
+            <div class="card-desc">ઓછી હાજરી ધરાવતા ટ્રેનીઓ માટે શિસ્તભંગ અને કવરીંગ પત્ર તૈયાર કરવા.</div>
+          </div>
+
+          <div class="card" style="--card-accent: #f59e0b; --icon-bg: #fffbeb;" onclick="triggerNav(5)">
+            <div class="card-icon"><i class="fa-solid fa-user-slash"></i></div>
+            <div class="card-title">એબ્સકોન્ડર રીપોર્ટ</div>
+            <div class="card-desc">લાંબા સમયથી બિનઅધિકૃત ગેરહાજર (Absconder) ટ્રેનીઓની વિગતવાર યાદી.</div>
+          </div>
+
+          <div class="card" style="--card-accent: #ec4899; --icon-bg: #fdf2f8;" onclick="triggerNav(6)">
+            <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="card-title">OC એબ્સકોન્ડર રીપોર્ટ</div>
+            <div class="card-desc">એબ્સકોન્ડર ટ્રેનીઓને કમી કરવા અથવા આખરી નોટિસ મોકલવા અંગેનું OC.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- App Viewer IFrames -->
+      <iframe id="view-app1" class="iframe-view" src="https://yuvrajsinh87.github.io/Continues_Absent_Report/"></iframe>
+      <iframe id="view-app2" class="iframe-view" src="https://yuvrajsinh87.github.io/OC_Continue_Absence/"></iframe>
+      <iframe id="view-app3" class="iframe-view" src="https://yuvrajsinh87.github.io/Below80_Attendance_Report/"></iframe>
+      <iframe id="view-app4" class="iframe-view" src="https://yuvrajsinh87.github.io/OC_Below80_Attandance/"></iframe>
+      <iframe id="view-app5" class="iframe-view" src="https://yuvrajsinh87.github.io/Absconder_Report/"></iframe>
+      <iframe id="view-app6" class="iframe-view" src="https://yuvrajsinh87.github.io/OC_Absconder_Report/"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const links = {
+      'app1': 'https://yuvrajsinh87.github.io/Continues_Absent_Report/',
+      'app2': 'https://yuvrajsinh87.github.io/OC_Continue_Absence/',
+      'app3': 'https://yuvrajsinh87.github.io/Below80_Attendance_Report/',
+      'app4': 'https://yuvrajsinh87.github.io/OC_Below80_Attandance/',
+      'app5': 'https://yuvrajsinh87.github.io/Absconder_Report/',
+      'app6': 'https://yuvrajsinh87.github.io/OC_Absconder_Report/'
+    };
+
+    let activeViewId = 'home';
+
+    function showTab(viewId, title, iconClass, elem) {
+      activeViewId = viewId;
+      
+      // Hide all views
+      document.querySelectorAll('.iframe-view').forEach(v => v.classList.remove('active-view'));
+      
+      // Show active view
+      document.getElementById('view-' + viewId).classList.add('active-view');
+
+      // Header Icon Color
+      let iconColor = '#3b82f6';
+      if(elem && elem.getAttribute('data-color')) {
+        const colorMap = {
+          'home': '#3b82f6',
+          'blue': '#3b82f6',
+          'purple': '#8b5cf6',
+          'emerald': '#10b981',
+          'cyan': '#06b6d4',
+          'amber': '#f59e0b',
+          'rose': '#ec4899'
+        };
+        iconColor = colorMap[elem.getAttribute('data-color')] || '#3b82f6';
+      }
+
+      // Update Title
+      document.getElementById('page-title').innerHTML = `<i class="${iconClass}" style="color: ${iconColor};"></i> <span>${title}</span>`;
+
+      // Highlight active sidebar item
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      if(elem) elem.classList.add('active');
+
+      // External link button
+      const extBtn = document.getElementById('ext-link');
+      if(viewId !== 'home') {
+        extBtn.style.display = 'flex';
+        extBtn.href = links[viewId];
+      } else {
+        extBtn.style.display = 'none';
+      }
+    }
+
+    function triggerNav(index) {
+      const navLinks = document.querySelectorAll('.nav-link');
+      if(navLinks[index]) {
+        navLinks[index].click();
+      }
+    }
+
+    function refreshCurrent() {
+      if(activeViewId === 'home') {
+        location.reload();
+      } else {
+        const frame = document.getElementById('view-' + activeViewId);
+        if(frame) frame.src = frame.src;
+      }
+    }
+  </script>
+</body>
+</html>
